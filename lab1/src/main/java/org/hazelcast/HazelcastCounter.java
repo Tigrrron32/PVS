@@ -4,6 +4,7 @@ import com.hazelcast.core.*;
 import com.hazelcast.cp.IAtomicLong;
 import com.hazelcast.map.IMap;
 
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -86,6 +87,24 @@ public class HazelcastCounter {
         public VersionedValue(int value, int version) {
             this.value = value;
             this.version = version;
+        }
+
+
+//        public int compareTo(VersionedValue other) {
+//            return Integer.compare(this.version, other.version);
+//        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+            VersionedValue that = (VersionedValue) obj;
+            return value == that.value && version == that.version;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(value, version);
         }
 
         @Override
